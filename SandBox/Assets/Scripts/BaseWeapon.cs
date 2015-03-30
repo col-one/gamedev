@@ -106,7 +106,7 @@ public class BaseWeapon : MonoBehaviour {
 		theProjectile.LookAt(theProjectile.position+fireDirection);
 
 		//set speed velocity reigidbody
-		theProjectile.rigidbody.velocity = fireDirection * projectileSpeed;
+		theProjectile.GetComponent<Rigidbody>().velocity = fireDirection * projectileSpeed;
 	}
 
 	public virtual Transform MakeProjectile()
@@ -123,7 +123,7 @@ public class BaseWeapon : MonoBehaviour {
 		//ignore colision parent
 		if(parentCollider != null)
 		{
-			Physics.IgnoreCollision(theProjectile.collider, parentCollider);
+			Physics.IgnoreCollision(theProjectile.GetComponent<Collider>(), parentCollider);
 		}
 
 		return theProjectile;

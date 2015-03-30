@@ -216,7 +216,7 @@ public class BaseWeaponController2D : MonoBehaviour {
 		//get current weapon
 		TEMPWeapon = (BaseWeapon2D) weaponScripts[selectedWeaponSlot];
 		//get transformation from world to local of projectile
-		localVelocity = transform.InverseTransformDirection(TEMPWeapon.projectileGo.rigidbody.velocity);
+		localVelocity = transform.InverseTransformDirection(TEMPWeapon.projectileGo.GetComponent<Rigidbody>().velocity);
 		//shoose veolicity dir
 		switch(fireDirections)
 		{
