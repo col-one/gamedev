@@ -103,7 +103,8 @@ public class BaseWeapon2D : MonoBehaviour {
 		theProjectile = MakeProjectile();
 
 		//set lookat
-		theProjectile.LookAt(theProjectile.position+fireDirection);
+		//not use in 2d mode
+		//theProjectile.LookAt(theProjectile.position+fireDirection);
 
 		//set speed velocity reigidbody
 		theProjectile.GetComponent<Rigidbody2D>().velocity = fireDirection * projectileSpeed;
@@ -113,7 +114,7 @@ public class BaseWeapon2D : MonoBehaviour {
 	{
 		//instantiate projectile with spawner
 		theProjectile= SpawnController.Instance.Spawn(projectileGo, myTransform.position + spawnPosOffset + 
-		                                              (myTransform.forward * forwardOffset), myTransform.rotation);
+		                                              (myTransform.up * forwardOffset), Quaternion.identity);
 		theProjectileGo= theProjectile.gameObject;
 		theProjectileGo.layer = myLayer;
 

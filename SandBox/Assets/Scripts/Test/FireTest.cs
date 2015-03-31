@@ -3,12 +3,12 @@ using System.Collections;
 
 public class FireTest : MonoBehaviour {
 
-	public BaseWeaponController weapon;
+	public BaseWeaponController2D weapon;
 
 
 	// Use this for initialization
 	void Start () {
-		weapon = (BaseWeaponController) GetComponent<BaseWeaponController>();
+		weapon = (BaseWeaponController2D) GetComponent<BaseWeaponController2D>();
 		//weapon.SetWeaponSlot(0);
 	}
 	

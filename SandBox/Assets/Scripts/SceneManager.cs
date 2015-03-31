@@ -7,13 +7,20 @@ public class SceneManager : MonoBehaviour {
 	public int gameLevelNum;
 
 	//property membre varaible
-	public static SceneManager instance;
-
+	public static SceneManager instance = null;
 	
-	void Start () {
-		//dont destroy cam/object
+	//Awake is always called before any Start functions
+	void Awake()
+	{
+		//Check if instance already exists
+		if (instance == null)
+			instance = this;
+		
+		//If instance already exists and it's not this:
+		else if (instance != this)
+			Destroy(gameObject);    
+		
 		DontDestroyOnLoad(gameObject);
-		instance = this;
 	}
 
 	public void GoNextLevel()
