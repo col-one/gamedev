@@ -64,6 +64,10 @@ public class BezierSplineInspector : Editor {
 		Vector3 point = handleTranform.TransformPoint(spline.GetControlPoint(index));
 		Handles.color = modeColors[(int)spline.GetControlPointMode(index)];
 		float size = HandleUtility.GetHandleSize(point);
+		if(index == 0)
+		{
+			size *= 2f;
+		}
 		if (Handles.Button (point, handleRotation, size * handleSize, size * pickSize, Handles.DotCap))
 		{
 			selectedIndex = index;
@@ -85,8 +89,16 @@ public class BezierSplineInspector : Editor {
 
 	public override void OnInspectorGUI()
 	{
-		DrawDefaultInspector();
+		//DrawDefaultInspector();
 		spline = target as BezierSpline;
+		EditorGUI.BeginChangeCheck();
+		bool loop = EditorGUILayout.Toggle("Loop", spline.Loop);
+		if(EditorGUI.EndChangeCheck())
+		{
+			Undo.RecordObject(spline, "Toggle Loop");
+			EditorUtility.SetDirty(spline);
+			spline.Loop = loop;
+		}
 		if(selectedIndex >= 0 && selectedIndex <  spline.ControlPointCount)
 		{
 			DrawSelectedPointInspector();
