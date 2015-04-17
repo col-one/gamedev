@@ -11,25 +11,59 @@ public class CharsController : MonoBehaviour {
 	private bool[] dragging = new bool[2];
 	private bool switchTouch;
 	private int id;
-	private Vector3 offset;
+	private Vector3[] offset = new Vector3[2];
 	private Vector2 tempVector;
+	private SpawnFeedback feedbackScript;
+	private int idRelease;
+	private GameObject releaseGo;
+	private SwitchToDark darker;
+	private bool pause = false;
 
 	public int timeToCrash;
 	public bool keepOffset;
+	public bool fall;
+
 
 	
-//	IEnumerator killAfterSec(){
-//		yield return new WaitForSeconds (timeToCrash);
-//		twin_collider_trigger script = GetComponent< twin_collider_trigger >();
-//		script.exploseTwin();
-//	}
+	IEnumerator killAfterSec(){
+		yield return new WaitForSeconds (timeToCrash);
+		Destroy(touches[0]);
+		Destroy(touches[1]);
+	}
 
 	void Awake () {
+
+		feedbackScript = GetComponent<SpawnFeedback>();
+		darker = GetComponent<SwitchToDark>();
 		layerMask = (1 << LayerMask.NameToLayer("Players"));
 		touches.Add(GameObject.FindGameObjectsWithTag("player1")[0]);
 		touches.Add(GameObject.FindGameObjectsWithTag("player2")[0]);
 	}
-	
+
+	void Update ()
+	{
+		if(switchTouch && Input.touchCount == 0 && !pause)
+		{
+			if(!darker.Dark)
+			{
+				darker.selectAllGo();
+				darker.switchColorSpritesToGray(darker.AllSprites);
+			}
+			Time.timeScale = 0.0f;
+			pause = true;
+		}
+		else if (Input.touchCount == 1 && pause)
+		{
+
+			if(darker.Dark)
+			{
+				darker.selectAllGo();
+				darker.switchColorSpritesToWhite(darker.AllSprites);
+			}
+			Time.timeScale = 1.0f;
+			pause = false;
+		}
+	}
 	
 	// Update is called once per frame
 	void FixedUpdate () {
@@ -44,7 +78,7 @@ public class CharsController : MonoBehaviour {
 					{
 						GameObject hitObject = hit.collider.gameObject;
 						tempVector = new Vector2( hitObject.transform.position.x, hitObject.transform.position.y);
-						offset = tempVector - hit.point;
+						offset[id] = tempVector - hit.point;
 					}
 					if(touches.Contains(hit.collider.gameObject)){
 						switchTouch = false;
@@ -58,16 +92,30 @@ public class CharsController : MonoBehaviour {
 			}
 			if (id <= maxTouch && touch.phase == TouchPhase.Moved && dragging[id]) {
 				Ray ray = Camera.main.ScreenPointToRay (touch.position);
-				touches[id].transform.position = ray.GetPoint(length) + offset;
+				touches[id].transform.position = ray.GetPoint(length) + offset[id];
 			}
 			if (id <= maxTouch && touch.phase == TouchPhase.Ended && dragging[id]) {
+				if(!switchTouch)
+					releaseGo = touches[id];
 				dragging[id] = false;
 				switchTouch = true;
 			}
-//			if(switchTouch)
-//				StartCoroutine("killAfterSec");
-//			else
-//				StopCoroutine("killAfterSec");
+			if(fall)
+			{
+				if(switchTouch)
+				{
+					feedbackScript.CreateFeedback(releaseGo.transform.position);
+					StartCoroutine("killAfterSec");
+				}
+				else
+				{
+					if(feedbackScript.Created)
+					{
+						feedbackScript.DestroyFeedback();
+					}
+					StopCoroutine("killAfterSec");
+				}
+			}
 		}
 	}
 }
