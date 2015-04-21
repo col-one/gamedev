@@ -1,10 +1,34 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SwitchToDark : MonoBehaviour {
+public class SwitchToDark : ScriptableObject {
 
 	private bool dark = false;
 	private SpriteRenderer[] allSprites;
+
+	private static SwitchToDark instance;
+	
+	public SwitchToDark ()
+	{
+		if (instance != null)
+		{
+			Debug.LogWarning("generate more than one spawn controller, return");
+			return;
+		}
+		instance = this;
+	}
+
+	public static SwitchToDark Instance
+	{
+		get
+		{
+			if(instance == null)
+			{
+				ScriptableObject.CreateInstance<SwitchToDark>();
+			}
+			return instance;
+		}
+	}
 
 	public bool Dark 
 	{

@@ -16,8 +16,6 @@ public class CharsController : MonoBehaviour {
 	private SpawnFeedback feedbackScript;
 	private int idRelease;
 	private GameObject releaseGo;
-	private SwitchToDark darker;
-	private bool pause = false;
 
 	public int timeToCrash;
 	public bool keepOffset;
@@ -34,35 +32,9 @@ public class CharsController : MonoBehaviour {
 	void Awake () {
 
 		feedbackScript = GetComponent<SpawnFeedback>();
-		darker = GetComponent<SwitchToDark>();
 		layerMask = (1 << LayerMask.NameToLayer("Players"));
 		touches.Add(GameObject.FindGameObjectsWithTag("player1")[0]);
 		touches.Add(GameObject.FindGameObjectsWithTag("player2")[0]);
-	}
-
-	void Update ()
-	{
-		if(switchTouch && Input.touchCount == 0 && !pause)
-		{
-			if(!darker.Dark)
-			{
-				darker.selectAllGo();
-				darker.switchColorSpritesToGray(darker.AllSprites);
-			}
-			Time.timeScale = 0.0f;
-			pause = true;
-		}
-		else if (Input.touchCount == 1 && pause)
-		{
-
-			if(darker.Dark)
-			{
-				darker.selectAllGo();
-				darker.switchColorSpritesToWhite(darker.AllSprites);
-			}
-			Time.timeScale = 1.0f;
-			pause = false;
-		}
 	}
 	
 	// Update is called once per frame
