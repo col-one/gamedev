@@ -32,7 +32,7 @@ public class CharsController : MonoBehaviour {
 	void Awake () {
 
 		feedbackScript = GetComponent<SpawnFeedback>();
-		layerMask = (1 << LayerMask.NameToLayer("Players"));
+		layerMask = (1<<LayerMask.NameToLayer("Players"));
 		touches.Add(GameObject.FindGameObjectsWithTag("player1")[0]);
 		touches.Add(GameObject.FindGameObjectsWithTag("player2")[0]);
 	}

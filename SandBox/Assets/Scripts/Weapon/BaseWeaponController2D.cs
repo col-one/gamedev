@@ -34,7 +34,7 @@ public class BaseWeaponController2D : MonoBehaviour {
 	public virtual void Start()
 	{
 		//set default slots
-		selectedWeaponSlot = 0;
+		//selectedWeaponSlot = 0;
 		lastSelectedWeaponSlot = -1;
 
 		//clear init list
@@ -76,7 +76,7 @@ public class BaseWeaponController2D : MonoBehaviour {
 		}
 
 		//equipe first weapon
-		SetWeaponSlot(0);
+		SetWeaponSlot(selectedWeaponSlot);
 
 	}
 
@@ -202,7 +202,7 @@ public class BaseWeaponController2D : MonoBehaviour {
 		//get weapon script
 		TEMPWeapon = (BaseWeapon2D) weaponScripts[selectedWeaponSlot];
 
-		theDir = GetDir();
+		//theDir = GetDir();
 
 		if(useForceVectorDirection)
 			theDir = forceVector;

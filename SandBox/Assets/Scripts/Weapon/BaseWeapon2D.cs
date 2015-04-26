@@ -2,6 +2,7 @@
 using System.Collections;
 
 public class BaseWeapon2D : MonoBehaviour {
+	public float pp=0.0f;
 
 	[System.NonSerialized]
 	public bool canFire;
@@ -23,7 +24,6 @@ public class BaseWeapon2D : MonoBehaviour {
 	public Vector3 spawnPosOffset;
 	public float forwardOffset = 1.5f;
 	public float reloadTime = 0.2f;
-	public float projectileSpeed = 10f;
 	public bool inheritVelocity;
 
 	[System.NonSerialized]
@@ -107,7 +107,7 @@ public class BaseWeapon2D : MonoBehaviour {
 		//theProjectile.LookAt(theProjectile.position+fireDirection);
 
 		//set speed velocity reigidbody
-		theProjectile.GetComponent<Rigidbody2D>().velocity = fireDirection * projectileSpeed;
+		theProjectile.GetComponent<Rigidbody2D>().velocity = fireDirection * pp;
 	}
 
 	public virtual Transform MakeProjectile()
